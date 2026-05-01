@@ -1,0 +1,15 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="1200" height="900" fill="#E5E7EB"/>
+<circle cx="320" cy="650" r="90" fill="#0F172A"/>
+<circle cx="320" cy="650" r="46" fill="#CBD5E1"/>
+<circle cx="820" cy="650" r="90" fill="#0F172A"/>
+<circle cx="820" cy="650" r="46" fill="#CBD5E1"/>
+<path d="M365 610L470 465H685L785 548H927" stroke="#111827" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M470 465L398 380H525" stroke="#111827" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M560 470L710 470" stroke="#475569" stroke-width="56" stroke-linecap="round"/>
+<path d="M695 470L760 360H864" stroke="#111827" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M532 520L610 610H775" stroke="#374151" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="444" y="430" width="180" height="74" rx="37" fill="#6B7280"/>
+<rect x="630" y="430" width="110" height="64" rx="32" fill="#9CA3AF"/>
+<text x="96" y="122" fill="#334155" font-family="Instrument Sans, sans-serif" font-size="48" font-weight="700">Credira Matic Series</text>
+</svg>
