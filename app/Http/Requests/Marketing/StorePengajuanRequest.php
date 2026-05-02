@@ -15,7 +15,7 @@ class StorePengajuanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pelanggan_id' => ['required', 'integer', Rule::exists('pelanggan', 'id')->where('marketing_user_id', (int) $this->user()?->id)],
+            'pelanggan_id' => ['required', 'integer', Rule::exists('pelanggan', 'id')],
             'motor_id' => ['required', 'integer', Rule::exists('motors', 'id')->where('status_aktif', true)],
             'jenis_cicilan_id' => ['required', 'integer', 'exists:jenis_cicilan,id'],
             'asuransi_id' => ['nullable', 'integer', 'exists:asuransi,id'],
@@ -48,7 +48,7 @@ class StorePengajuanRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'pelanggan_id.exists' => 'Pelanggan yang dipilih tidak tersedia untuk akun marketing ini.',
+            'pelanggan_id.exists' => 'Pelanggan yang dipilih tidak tersedia.',
             'motor_id.exists' => 'Motor yang dipilih tidak aktif atau tidak tersedia.',
         ];
     }

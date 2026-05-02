@@ -12,7 +12,7 @@
                 <div>
                     <p class="marketing-hero__eyebrow">Marketing Workspace</p>
                     <h2 class="marketing-hero__title">Kelola prospek, pilih motor, dan ubah lead menjadi pengajuan aktif.</h2>
-                    <p class="marketing-hero__copy">Area marketing kini memakai ownership yang tegas, jadi pelanggan, pengajuan, dan pipeline yang tampil hanya milik akun Anda sendiri.</p>
+                    <p class="marketing-hero__copy">Area marketing menampilkan pelanggan dan pipeline pengajuan lintas akun agar follow up tim bisa berjalan lebih cepat.</p>
                 </div>
                 <div class="marketing-soft-card-dark">
                     <p class="text-[11px] uppercase tracking-[0.24em] text-white/45">Fokus hari ini</p>
@@ -70,7 +70,7 @@
                         </div>
                     @empty
                         <div class="dashboard-empty-state">
-                            Belum ada pengajuan yang terhubung ke akun marketing ini.
+                            Belum ada pengajuan yang tersedia di pipeline marketing.
                         </div>
                     @endforelse
                 </div>
@@ -116,7 +116,7 @@
                 </article>
                 <article class="marketing-soft-card">
                     <p class="text-sm font-semibold text-slate-950">Pelanggan tersegmentasi</p>
-                    <p class="mt-2 text-sm leading-6 text-slate-600">Setiap marketing hanya melihat pelanggan miliknya sendiri, lengkap dengan detail identitas dan riwayat pengajuan.</p>
+                    <p class="mt-2 text-sm leading-6 text-slate-600">Seluruh tim marketing dapat melihat pelanggan dan riwayat pengajuan untuk kolaborasi follow up yang lebih cepat.</p>
                 </article>
                 <article class="marketing-soft-card">
                     <p class="text-sm font-semibold text-slate-950">Flow pengajuan hidup</p>

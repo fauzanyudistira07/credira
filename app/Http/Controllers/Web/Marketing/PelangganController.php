@@ -20,11 +20,8 @@ class PelangganController extends Controller
 
     public function index(Request $request): View
     {
-        $marketing = $request->user();
-
         $pelanggan = Pelanggan::query()
             ->with(['user', 'pengajuanKredit'])
-            ->ownedByMarketing($marketing->id)
             ->when($request->filled('q'), function ($builder) use ($request) {
                 $search = trim($request->string('q')->toString());
 
@@ -94,8 +91,6 @@ class PelangganController extends Controller
 
     private function ownedPelanggan(Pelanggan $pelanggan): Pelanggan
     {
-        abort_unless($pelanggan->marketing_user_id === auth()->id(), 404);
-
         return $pelanggan;
     }
 }

@@ -27,11 +27,8 @@ class PengajuanController extends Controller
 
     public function index(Request $request): View
     {
-        $marketing = $request->user();
-
         $query = PengajuanKredit::query()
             ->with(['pelanggan.user', 'motor', 'jenisCicilan'])
-            ->ownedByMarketing($marketing->id)
             ->when($request->filled('q'), function ($builder) use ($request) {
                 $search = trim($request->string('q')->toString());
 
@@ -66,11 +63,8 @@ class PengajuanController extends Controller
 
     public function create(Request $request): View
     {
-        $marketingId = $request->user()->id;
-
         return view('marketing.pengajuan.create', [
             'pelanggan' => Pelanggan::query()
-                ->ownedByMarketing($marketingId)
                 ->orderBy('nama_lengkap')
                 ->get(),
             'motors' => Motor::query()->with('jenisMotor')->active()->orderBy('nama_motor')->get(),
@@ -84,9 +78,7 @@ class PengajuanController extends Controller
     public function store(StorePengajuanRequest $request): RedirectResponse
     {
         $marketing = $request->user();
-        $pelanggan = Pelanggan::query()
-            ->ownedByMarketing($marketing->id)
-            ->findOrFail($request->integer('pelanggan_id'));
+        $pelanggan = Pelanggan::query()->findOrFail($request->integer('pelanggan_id'));
 
         $application = $this->applicationService->create(
             $marketing,
@@ -163,8 +155,6 @@ class PengajuanController extends Controller
 
     private function ownedApplication(PengajuanKredit $pengajuan): PengajuanKredit
     {
-        abort_unless($pengajuan->marketing_user_id === auth()->id(), 404);
-
         return $pengajuan;
     }
 }

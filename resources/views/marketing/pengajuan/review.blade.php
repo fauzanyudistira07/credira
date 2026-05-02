@@ -13,8 +13,8 @@
                 <h2 class="mt-3 text-2xl font-semibold text-slate-950">{{ $pengajuan->kode_pengajuan }}</h2>
                 <div class="mt-4 flex flex-wrap gap-2">
                     <x-status-badge :status="$pengajuan->status_pengajuan" />
-                    <span class="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700">{{ $pengajuan->pelanggan?->display_name ?? '-' }}</span>
-                    <span class="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-semibold text-slate-700">{{ $pengajuan->motor?->nama_motor ?? '-' }}</span>
+                    <span class="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">{{ $pengajuan->pelanggan?->display_name ?? '-' }}</span>
+                    <span class="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-sm font-semibold text-white/90">{{ $pengajuan->motor?->nama_motor ?? '-' }}</span>
                 </div>
 
                 <div class="mt-6 grid gap-3">
@@ -43,7 +43,7 @@
 
                 <div class="grid gap-3 sm:grid-cols-2">
                     @foreach ($reviewOptions as $value => $label)
-                        <label class="rounded-[1.4rem] border border-slate-200 bg-slate-50 p-4 transition has-[:checked]:border-slate-900 has-[:checked]:bg-white">
+                        <label class="marketing-soft-card cursor-pointer !p-4 transition has-[:checked]:!border-orange-300 has-[:checked]:shadow-[0_18px_44px_-30px_rgba(255,98,37,0.28)]">
                             <input type="radio" name="status" value="{{ $value }}" class="sr-only" @checked(old('status', 'review') === $value)>
                             <span class="block font-semibold text-slate-950">{{ $label }}</span>
                             <span class="mt-2 block text-sm text-slate-600">

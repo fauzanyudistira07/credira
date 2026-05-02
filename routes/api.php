@@ -12,9 +12,9 @@ use App\Http\Controllers\Api\UserPaymentApiController;
 use App\Http\Controllers\Api\UserProfileApiController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/payments/midtrans/notification', MidtransWebhookController::class)->name('payments.midtrans.notification');
+Route::post('/payments/midtrans/notification', MidtransWebhookController::class)->name('api.payments.midtrans.notification');
 
-Route::prefix('public')->name('public.')->group(function () {
+Route::prefix('public')->name('api.public.')->group(function () {
     Route::get('/motors', [PublicApiController::class, 'motors'])->name('motors.index');
     Route::get('/motors/featured', [PublicApiController::class, 'featuredMotors'])->name('motors.featured');
     Route::get('/motors/{motor}', [PublicApiController::class, 'showMotor'])->name('motors.show');
@@ -25,7 +25,7 @@ Route::prefix('public')->name('public.')->group(function () {
     Route::post('/contact', [PublicApiController::class, 'contact'])->name('contact');
 });
 
-Route::prefix('auth')->name('auth.')->group(function () {
+Route::prefix('auth')->name('api.auth.')->group(function () {
     Route::post('/register', [AuthApiController::class, 'register'])->name('register');
     Route::post('/login', [AuthApiController::class, 'login'])->name('login');
     Route::post('/logout', [AuthApiController::class, 'logout'])->name('logout')->middleware('auth');
@@ -33,7 +33,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('/reset-password', [AuthApiController::class, 'resetPassword'])->name('reset-password');
 });
 
-Route::middleware('auth')->prefix('user')->name('user.')->group(function () {
+Route::middleware('auth')->prefix('user')->name('api.user.')->group(function () {
     Route::get('/dashboard', [UserDashboardApiController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [UserProfileApiController::class, 'show'])->name('profile.show');

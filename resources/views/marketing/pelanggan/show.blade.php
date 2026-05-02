@@ -13,7 +13,7 @@
                     <div>
                         <p class="dashboard-kicker">Customer Profile</p>
                         <h2 class="mt-3 text-3xl font-semibold tracking-[-0.04em] text-slate-950">{{ $pelanggan->display_name }}</h2>
-                        <p class="mt-3 text-sm leading-7 text-slate-600">Data pelanggan ini hanya terlihat untuk marketing owner yang terhubung di sistem.</p>
+                        <p class="mt-3 text-sm leading-7 text-slate-600">Data pelanggan ini dapat dilihat oleh seluruh akun marketing untuk mendukung kolaborasi tim.</p>
                     </div>
                     <div class="flex flex-col gap-3 sm:flex-row">
                         <a href="{{ route('marketing.pelanggan.edit', $pelanggan) }}" class="btn-secondary">Edit Data</a>
@@ -58,17 +58,17 @@
                 </div>
 
                 <div class="space-y-4 text-sm leading-7 text-slate-600">
-                    <div class="rounded-[1.45rem] border border-slate-200 bg-slate-50 p-4">
+                    <div class="marketing-soft-card !p-4">
                         <p class="font-semibold text-slate-950">Alamat utama</p>
                         <p class="mt-2">{{ $pelanggan->alamat1 ?: '-' }}</p>
                         <p class="mt-1">{{ $pelanggan->kota1 ?: '-' }}, {{ $pelanggan->propinsi1 ?: '-' }} {{ $pelanggan->kodepos1 ?: '' }}</p>
                     </div>
-                    <div class="rounded-[1.45rem] border border-slate-200 bg-slate-50 p-4">
+                    <div class="marketing-soft-card !p-4">
                         <p class="font-semibold text-slate-950">Akun pelanggan</p>
                         <p class="mt-2">Nama akun: {{ $pelanggan->user?->name ?: '-' }}</p>
                         <p>Email login: {{ $pelanggan->user?->email ?: '-' }}</p>
                     </div>
-                    <div class="rounded-[1.45rem] border border-slate-200 bg-slate-50 p-4">
+                    <div class="marketing-soft-card !p-4">
                         <p class="font-semibold text-slate-950">Foto / dokumen</p>
                         <div class="mt-3 flex flex-wrap gap-2">
                             @foreach (['foto_profil_url' => 'Profil', 'foto_ktp_url' => 'KTP', 'foto_selfie_url' => 'Selfie'] as $field => $label)

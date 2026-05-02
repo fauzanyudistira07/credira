@@ -706,8 +706,10 @@ const bindUploadForms = () => {
             event.preventDefault();
             progressShell.classList.remove('hidden');
 
+            const requestUrl = form.getAttribute('action') || window.location.href;
+            const requestMethod = form.getAttribute('method') || form.method || 'POST';
             const xhr = new XMLHttpRequest();
-            xhr.open(form.method || 'POST', form.action);
+            xhr.open(requestMethod.toUpperCase(), requestUrl);
             xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 
             xhr.upload.addEventListener('progress', (uploadEvent) => {

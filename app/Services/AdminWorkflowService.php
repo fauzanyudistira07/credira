@@ -32,11 +32,12 @@ class AdminWorkflowService
             ]);
         }
 
-        $application->loadMissing(['pelanggan', 'jenisCicilan']);
+        $application->loadMissing(['pelanggan', 'jenisCicilan', 'motor']);
 
         DB::transaction(function () use ($application, $nextStatus, $note, $admin) {
             $oldStatus = $application->status_pengajuan;
             $message = $this->resolveApplicationStatusNote($nextStatus, $note, $admin);
+            $this->syncMotorStockForApplicationStatusTransition($application, $oldStatus, $nextStatus);
 
             $payload = [
                 'status_pengajuan' => $nextStatus->value,
@@ -67,7 +68,8 @@ class AdminWorkflowService
             $application->update($payload);
             LegacyDiagramSync::syncPengajuan($application->fresh(['jenisCicilan']));
 
-            if ($nextStatus === ApplicationStatus::KontrakAktif) {
+            if (in_array($nextStatus, [ApplicationStatus::Disetujui, ApplicationStatus::KontrakAktif], true)) {
+                // Generate billing + delivery pipeline as soon as application is approved.
                 $this->ensureInstallments($application);
                 $this->ensureDelivery($application);
             }
@@ -325,6 +327,47 @@ class AdminWorkflowService
         ]);
 
         LegacyDiagramSync::syncDelivery($delivery);
+    }
+
+    private function syncMotorStockForApplicationStatusTransition(
+        PengajuanKredit $application,
+        ?string $oldStatus,
+        ApplicationStatus $nextStatus
+    ): void {
+        $wasReserved = $this->isStockReservedStatus($oldStatus);
+        $willBeReserved = $this->isStockReservedStatus($nextStatus->value);
+
+        if ($wasReserved === $willBeReserved) {
+            return;
+        }
+
+        $motor = $application->motor()->lockForUpdate()->first();
+        if (! $motor) {
+            return;
+        }
+
+        if (! $wasReserved && $willBeReserved) {
+            if ((int) $motor->stok <= 0) {
+                throw ValidationException::withMessages([
+                    'status_pengajuan' => 'Stok motor '.$motor->nama_motor.' habis. Tambahkan stok sebelum menyetujui pengajuan.',
+                ]);
+            }
+
+            $motor->decrement('stok');
+
+            return;
+        }
+
+        $motor->increment('stok');
+    }
+
+    private function isStockReservedStatus(?string $status): bool
+    {
+        return in_array($status, [
+            ApplicationStatus::Disetujui->value,
+            ApplicationStatus::KontrakAktif->value,
+            ApplicationStatus::Selesai->value,
+        ], true);
     }
 
     private function resolveApplicationStatusNote(ApplicationStatus $status, ?string $note, User $actor): string

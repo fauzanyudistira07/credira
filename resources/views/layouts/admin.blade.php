@@ -21,6 +21,8 @@
             ['label' => 'Motor', 'caption' => 'Master katalog dan stok', 'route' => 'admin.motors.index', 'pattern' => 'admin.motors.*', 'icon' => 'motor'],
             ['label' => 'Pengajuan', 'caption' => 'Review semua pengajuan', 'route' => 'admin.pengajuan.index', 'pattern' => 'admin.pengajuan.*', 'icon' => 'applications'],
             ['label' => 'Pelanggan', 'caption' => 'Monitoring data pelanggan', 'route' => 'admin.pelanggan.index', 'pattern' => 'admin.pelanggan.*', 'icon' => 'customers'],
+            ['label' => 'Pembayaran', 'caption' => 'Verifikasi transaksi', 'route' => 'admin.payments.index', 'pattern' => 'admin.payments.*', 'icon' => 'payments'],
+            ['label' => 'Pengiriman', 'caption' => 'Konfirmasi unit kirim', 'route' => 'admin.deliveries.index', 'pattern' => 'admin.deliveries.*', 'icon' => 'delivery'],
         ];
         $iconPaths = [
             'home' => 'M3.75 10.5 12 3.75l8.25 6.75v9a.75.75 0 0 1-.75.75h-4.5v-5.25h-6V20.25h-4.5a.75.75 0 0 1-.75-.75z',
@@ -28,6 +30,8 @@
             'users' => 'M16.5 18.75a4.5 4.5 0 0 0-9 0m9 0h3a2.25 2.25 0 0 1 2.25 2.25v.75H2.25V21a2.25 2.25 0 0 1 2.25-2.25h3m9-10.5A3.75 3.75 0 1 1 9 8.25a3.75 3.75 0 0 1 7.5 0zm6.75 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0z',
             'motor' => 'M4.5 16.5h15m-12-6.75h9m-12 0a2.25 2.25 0 1 1 0-4.5m12 4.5a2.25 2.25 0 1 0 0-4.5m-12 11.25a2.25 2.25 0 1 1 0-4.5m12 4.5a2.25 2.25 0 1 0 0-4.5',
             'customers' => 'M15 19.128a9.38 9.38 0 0 0-3-.503 9.38 9.38 0 0 0-3 .503m6 0A3.375 3.375 0 0 0 18.375 15.75V15a3.375 3.375 0 0 0-6.75 0v.75A3.375 3.375 0 0 0 15 19.128zm-3-8.253a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
+            'payments' => 'M3.75 7.5A2.25 2.25 0 0 1 6 5.25h12A2.25 2.25 0 0 1 20.25 7.5v9A2.25 2.25 0 0 1 18 18.75H6a2.25 2.25 0 0 1-2.25-2.25v-9zm0 2.25h16.5M7.5 14.25h3.75',
+            'delivery' => 'M3.75 7.5h9v6h-9zM12.75 9.75h3l2.25 2.25v1.5h-5.25zM7.5 16.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm9 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z',
         ];
     @endphp
 
@@ -101,7 +105,7 @@
                 <div class="shell">
                     <div class="admin-header__inner">
                         <div class="app-header__lead">
-                            <button type="button" class="admin-header__icon lg:hidden" @click="adminDrawerOpen = true" aria-label="Buka menu" :aria-expanded="adminDrawerOpen.toString()">
+                            <button type="button" class="admin-header__icon lg:!hidden" @click="adminDrawerOpen = true" aria-label="Buka menu" :aria-expanded="adminDrawerOpen.toString()">
                                 <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
                                     <path d="M4 7h16M4 12h16M4 17h12" stroke-linecap="round"/>
                                 </svg>
@@ -124,7 +128,7 @@
             </header>
 
             <div
-                class="fixed inset-0 z-50 bg-slate-950/72 backdrop-blur-sm lg:hidden"
+                class="fixed inset-0 z-50 bg-slate-950/72 backdrop-blur-sm lg:!hidden"
                 x-cloak
                 x-show="adminDrawerOpen"
                 x-transition.opacity.duration.200ms
@@ -133,7 +137,7 @@
 
             <div
                 id="admin-sidebar-mobile"
-                class="admin-mobile-drawer lg:hidden"
+                class="admin-mobile-drawer lg:!hidden"
                 x-cloak
                 x-show="adminDrawerOpen"
                 x-transition:enter="transition ease-out duration-250"

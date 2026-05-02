@@ -34,14 +34,7 @@
             ->take(2)
             ->map(fn (string $part) => strtoupper(substr($part, 0, 1)))
             ->implode('');
-        $showMobileNav = ! request()->routeIs(
-            'user.applications.create',
-            'user.applications.edit',
-            'user.applications.documents',
-            'user.applications.show',
-            'user.installments.show',
-            'user.payments.create'
-        );
+        $showMobileNav = false;
         $showHeaderAction = ! request()->routeIs(
             'user.applications.create',
             'user.applications.edit',
@@ -172,7 +165,7 @@
                 <div class="shell">
                     <div class="app-header__inner">
                         <div class="app-header__lead">
-                            <button type="button" class="app-header__icon lg:hidden" data-drawer-toggle="#user-sidebar-mobile" aria-label="Buka menu">
+                            <button type="button" class="app-header__icon lg:!hidden" data-drawer-toggle="#user-sidebar-mobile" aria-label="Buka menu">
                             <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <path d="M4 7h16M4 12h16M4 17h12" stroke-linecap="round"/>
                             </svg>
@@ -210,7 +203,7 @@
                 </div>
             </header>
 
-            <div id="user-sidebar-mobile" class="shell hidden py-4 lg:hidden">
+            <div id="user-sidebar-mobile" class="shell hidden py-4 lg:!hidden">
                 <div class="app-panel">
                     <div class="flex items-center gap-3">
                         <div class="app-avatar">{{ $initials }}</div>
@@ -242,7 +235,7 @@
     </div>
 
     @if ($showMobileNav)
-        <nav class="app-mobile-nav lg:hidden">
+        <nav class="app-mobile-nav lg:!hidden">
             @foreach ($mobileMenu as $item)
                 @php($active = request()->routeIs($item['pattern']))
                 <a href="{{ route($item['route']) }}" class="app-mobile-nav__item {{ $active ? 'app-mobile-nav__item-active' : '' }}">

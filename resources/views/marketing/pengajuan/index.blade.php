@@ -17,7 +17,7 @@
                 <div class="marketing-soft-card-dark">
                     <p class="text-[11px] uppercase tracking-[0.24em] text-white/45">Total hasil</p>
                     <p class="mt-2 text-2xl font-semibold text-white">{{ $pengajuan->total() }}</p>
-                    <p class="mt-2 text-sm leading-6 text-white/65">Daftar ini hanya memuat pengajuan yang dibuat oleh marketing yang sedang login.</p>
+                    <p class="mt-2 text-sm leading-6 text-white/65">Daftar ini memuat seluruh pengajuan untuk kolaborasi lintas akun marketing.</p>
                 </div>
             </div>
         </section>

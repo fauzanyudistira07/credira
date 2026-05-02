@@ -185,7 +185,6 @@
     }
 
     .admin-console-body .status-badge,
-    .dashboard-body-marketing .status-badge,
     .dashboard-body-ceo .status-badge,
     .app-panel-dark .status-badge,
     .content-panel-dark .status-badge,
@@ -194,7 +193,6 @@
     }
 
     .admin-console-body .status-badge[data-status-tone='warning'],
-    .dashboard-body-marketing .status-badge[data-status-tone='warning'],
     .dashboard-body-ceo .status-badge[data-status-tone='warning'],
     .app-panel-dark .status-badge[data-status-tone='warning'],
     .content-panel-dark .status-badge[data-status-tone='warning'],
@@ -203,7 +201,6 @@
     }
 
     .admin-console-body .status-badge[data-status-tone='success'],
-    .dashboard-body-marketing .status-badge[data-status-tone='success'],
     .dashboard-body-ceo .status-badge[data-status-tone='success'],
     .app-panel-dark .status-badge[data-status-tone='success'],
     .content-panel-dark .status-badge[data-status-tone='success'],
@@ -212,7 +209,6 @@
     }
 
     .admin-console-body .status-badge[data-status-tone='info'],
-    .dashboard-body-marketing .status-badge[data-status-tone='info'],
     .dashboard-body-ceo .status-badge[data-status-tone='info'],
     .app-panel-dark .status-badge[data-status-tone='info'],
     .content-panel-dark .status-badge[data-status-tone='info'],
@@ -221,7 +217,6 @@
     }
 
     .admin-console-body .status-badge[data-status-tone='danger'],
-    .dashboard-body-marketing .status-badge[data-status-tone='danger'],
     .dashboard-body-ceo .status-badge[data-status-tone='danger'],
     .app-panel-dark .status-badge[data-status-tone='danger'],
     .content-panel-dark .status-badge[data-status-tone='danger'],
@@ -230,7 +225,6 @@
     }
 
     .admin-console-body .status-badge[data-status-tone='accent'],
-    .dashboard-body-marketing .status-badge[data-status-tone='accent'],
     .dashboard-body-ceo .status-badge[data-status-tone='accent'],
     .app-panel-dark .status-badge[data-status-tone='accent'],
     .content-panel-dark .status-badge[data-status-tone='accent'],
@@ -239,7 +233,6 @@
     }
 
     .admin-console-body .status-badge[data-status-tone='violet'],
-    .dashboard-body-marketing .status-badge[data-status-tone='violet'],
     .dashboard-body-ceo .status-badge[data-status-tone='violet'],
     .app-panel-dark .status-badge[data-status-tone='violet'],
     .content-panel-dark .status-badge[data-status-tone='violet'],
@@ -3144,6 +3137,34 @@
         @apply border-white/10 bg-[linear-gradient(180deg,rgba(15,23,42,0.88),rgba(17,24,39,0.94))] shadow-[0_28px_90px_-54px_rgba(0,0,0,0.5)];
     }
 
+    .dashboard-body-marketing .status-badge {
+        @apply border-white/15 bg-white/10 text-white;
+    }
+
+    .dashboard-body-marketing .status-badge[data-status-tone='warning'] {
+        @apply border-amber-200 bg-amber-100 text-amber-900;
+    }
+
+    .dashboard-body-marketing .status-badge[data-status-tone='success'] {
+        @apply border-emerald-200 bg-emerald-100 text-emerald-900;
+    }
+
+    .dashboard-body-marketing .status-badge[data-status-tone='info'] {
+        @apply border-sky-200 bg-sky-100 text-sky-900;
+    }
+
+    .dashboard-body-marketing .status-badge[data-status-tone='danger'] {
+        @apply border-rose-200 bg-rose-100 text-rose-900;
+    }
+
+    .dashboard-body-marketing .status-badge[data-status-tone='accent'] {
+        @apply border-orange-200 bg-orange-100 text-orange-900;
+    }
+
+    .dashboard-body-marketing .status-badge[data-status-tone='violet'] {
+        @apply border-violet-200 bg-violet-100 text-violet-900;
+    }
+
     .dashboard-body-marketing .marketing-section-title,
     .dashboard-body-marketing .dashboard-panel__title {
         @apply text-white;
@@ -3519,6 +3540,19 @@
     }
 
     .dashboard-body-ceo .ceo-customer-hero__aside .btn-secondary {
+        @apply border-orange-300/20 bg-orange-400/10 text-orange-100 hover:border-orange-300/35 hover:bg-orange-400/16 hover:text-white;
+    }
+
+    .dashboard-body-ceo .ceo-product-hero__aside {
+        background: linear-gradient(180deg, rgba(12, 18, 31, 0.96), rgba(22, 30, 45, 0.94));
+        box-shadow: 0 28px 80px -56px rgba(0, 0, 0, 0.72);
+    }
+
+    .dashboard-body-ceo .ceo-product-hero__stat {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
+    }
+
+    .dashboard-body-ceo .ceo-product-hero__aside .btn-secondary {
         @apply border-orange-300/20 bg-orange-400/10 text-orange-100 hover:border-orange-300/35 hover:bg-orange-400/16 hover:text-white;
     }
 

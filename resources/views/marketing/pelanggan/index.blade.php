@@ -17,7 +17,7 @@
                 <div class="marketing-soft-card-dark">
                     <p class="text-[11px] uppercase tracking-[0.24em] text-white/45">Total pelanggan</p>
                     <p class="mt-2 text-2xl font-semibold text-white">{{ $pelanggan->total() }}</p>
-                    <p class="mt-2 text-sm leading-6 text-white/65">Setiap data di halaman ini sudah otomatis dibatasi ke owner marketing yang sedang login.</p>
+                    <p class="mt-2 text-sm leading-6 text-white/65">Semua data pelanggan tampil untuk kolaborasi tim marketing yang sedang login.</p>
                 </div>
             </div>
         </section>
@@ -59,7 +59,7 @@
                 action-href="{{ route('marketing.pelanggan.create') }}"
             />
         @else
-            <x-table-shell class="marketing-surface" title="Daftar pelanggan" description="Semua data tetap dibatasi ke owner marketing yang sedang login.">
+            <x-table-shell class="marketing-surface" title="Daftar pelanggan" description="Semua data pelanggan dapat diakses lintas akun marketing untuk memudahkan follow up tim.">
                 <div class="marketing-table-wrap overflow-x-auto">
                     <table class="marketing-table">
                         <thead>

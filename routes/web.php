@@ -92,7 +92,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/deliveries', [AdminDeliveryController::class, 'index'])->name('deliveries.index');
         Route::get('/deliveries/{delivery}', [AdminDeliveryController::class, 'show'])->name('deliveries.show');
-        Route::post('/deliveries/{delivery}', [AdminDeliveryController::class, 'update'])->name('deliveries.update');
+        Route::put('/deliveries/{delivery}', [AdminDeliveryController::class, 'update'])->name('deliveries.update');
     });
 
     Route::prefix('marketing')->name('marketing.')->middleware('role:marketing')->group(function () {

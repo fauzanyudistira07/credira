@@ -11,13 +11,11 @@ class DashboardController extends Controller
 {
     public function index(): View
     {
-        $user = auth()->user();
-
-        $query = PengajuanKredit::query()->ownedByMarketing($user->id);
+        $query = PengajuanKredit::query();
 
         return view('dashboard.marketing', [
             'stats' => [
-                'total_pelanggan' => Pelanggan::ownedByMarketing($user->id)->count(),
+                'total_pelanggan' => Pelanggan::query()->count(),
                 'total_pengajuan' => (clone $query)->count(),
                 'pending_pengajuan' => (clone $query)->pending()->count(),
                 'approved_pengajuan' => (clone $query)->approved()->count(),
