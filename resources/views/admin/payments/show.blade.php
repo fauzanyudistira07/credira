@@ -34,12 +34,18 @@
                 <div class="mt-6 grid gap-3 text-sm text-slate-300">
                     <p><span class="font-semibold text-white">Angsuran:</span> Ke-{{ $payment->installment->angsuran_ke }}</p>
                     <p><span class="font-semibold text-white">Metode:</span> {{ $payment->metodeBayar?->metode_pembayaran ?? $payment->metode_bayar }}</p>
+                    <p><span class="font-semibold text-white">Midtrans Order ID:</span> {{ $payment->midtrans_order_id ?? '-' }}</p>
+                    <p><span class="font-semibold text-white">Midtrans Transaction ID:</span> {{ $payment->midtrans_transaction_id ?? '-' }}</p>
                     <p><span class="font-semibold text-white">Bank Pengirim:</span> {{ $payment->nama_bank_pengirim ?? '-' }}</p>
                     <p><span class="font-semibold text-white">Pemilik Rekening:</span> {{ $payment->nama_pemilik_rekening ?? '-' }}</p>
                     <p><span class="font-semibold text-white">Catatan Verifikasi:</span> {{ $payment->catatan_verifikasi ?? '-' }}</p>
                 </div>
 
-                <a href="{{ $payment->proof_url }}" target="_blank" rel="noopener noreferrer" class="admin-utility-button mt-6">Lihat Bukti Pembayaran</a>
+                @if ($payment->proof_url)
+                    <a href="{{ $payment->proof_url }}" target="_blank" rel="noopener noreferrer" class="admin-utility-button mt-6">Lihat Bukti Pembayaran</a>
+                @elseif ($payment->midtrans_redirect_url)
+                    <a href="{{ $payment->midtrans_redirect_url }}" target="_blank" rel="noopener noreferrer" class="admin-utility-button mt-6">Buka Halaman Midtrans</a>
+                @endif
             </section>
 
             <section class="admin-detail-panel admin-form-shell">

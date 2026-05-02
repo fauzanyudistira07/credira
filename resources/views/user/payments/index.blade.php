@@ -1,15 +1,15 @@
 @extends('layouts.user', [
     'title' => 'Pembayaran',
     'heading' => 'Pembayaran Angsuran',
-    'subheading' => 'Riwayat upload bukti transfer dan status verifikasi seluruh pembayaran kredit motor Anda.',
+    'subheading' => 'Riwayat transaksi Midtrans dan status pembayaran seluruh angsuran kredit motor Anda.',
 ])
 
 @section('content')
     <section class="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
         <div class="app-panel-dark">
             <p class="app-kicker">Pusat Pembayaran</p>
-            <h2 class="mt-4 text-3xl font-semibold leading-tight text-white sm:text-4xl">Upload bukti transfer dan pantau validasi pembayaran dalam satu aplikasi.</h2>
-            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">Setelah transfer dilakukan, cukup unggah bukti pembayaran di sini. Sistem akan menyimpan riwayat pembayaran dan menampilkan status verifikasinya secara jelas.</p>
+            <h2 class="mt-4 text-3xl font-semibold leading-tight text-white sm:text-4xl">Bayar angsuran online lewat Midtrans dan pantau statusnya di sini.</h2>
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">Setiap transaksi disimpan otomatis dan status akan disinkronkan dari Midtrans. Anda bisa melanjutkan pembayaran yang masih pending kapan saja.</p>
 
             <div class="mt-8 grid gap-4 sm:grid-cols-3">
                 <div class="app-metric-card-dark">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="app-metric-card-dark">
                     <p class="text-[11px] uppercase tracking-[0.24em] text-white/46">Aksi cepat</p>
-                    <a href="{{ route('user.payments.create') }}" class="btn-outline-light mt-3 w-full">Upload Bukti</a>
+                    <a href="{{ route('user.payments.create') }}" class="btn-outline-light mt-3 w-full">Bayar Sekarang</a>
                 </div>
             </div>
         </div>
@@ -33,15 +33,15 @@
             <div class="mt-6 grid gap-3">
                 <div class="app-list-card-muted">
                     <p class="font-semibold text-slate-950">1. Pilih tagihan aktif</p>
-                    <p class="mt-2 text-sm leading-7 text-slate-600">Ambil angsuran yang ingin dibayar langsung dari halaman upload pembayaran.</p>
+                    <p class="mt-2 text-sm leading-7 text-slate-600">Pilih angsuran dari halaman pembayaran untuk memulai transaksi.</p>
                 </div>
                 <div class="app-list-card-muted">
-                    <p class="font-semibold text-slate-950">2. Transfer sesuai metode bayar</p>
-                    <p class="mt-2 text-sm leading-7 text-slate-600">Gunakan rekening tujuan yang tersedia dan simpan bukti transfer Anda.</p>
+                    <p class="font-semibold text-slate-950">2. Lanjut ke Midtrans Snap</p>
+                    <p class="mt-2 text-sm leading-7 text-slate-600">Selesaikan pembayaran via VA, e-wallet, QRIS, atau kartu di halaman Midtrans.</p>
                 </div>
                 <div class="app-list-card-muted">
-                    <p class="font-semibold text-slate-950">3. Tunggu verifikasi</p>
-                    <p class="mt-2 text-sm leading-7 text-slate-600">Status akan berubah dari pending menjadi valid atau ditolak sesuai hasil pengecekan admin.</p>
+                    <p class="font-semibold text-slate-950">3. Status sinkron otomatis</p>
+                    <p class="mt-2 text-sm leading-7 text-slate-600">Setelah pembayaran sukses, status angsuran akan berubah otomatis tanpa upload bukti manual.</p>
                 </div>
             </div>
         </div>
@@ -51,9 +51,9 @@
         <div class="flex items-center justify-between gap-4">
             <div>
                 <p class="app-kicker">Riwayat Pembayaran</p>
-                <h2 class="mt-3 text-2xl font-semibold text-slate-950">Semua bukti transfer yang pernah Anda unggah</h2>
+                <h2 class="mt-3 text-2xl font-semibold text-slate-950">Semua transaksi pembayaran angsuran Anda</h2>
             </div>
-            <a href="{{ route('user.payments.create') }}" class="btn-primary">Upload Bukti</a>
+            <a href="{{ route('user.payments.create') }}" class="btn-primary">Bayar Sekarang</a>
         </div>
 
         <div class="mt-6 grid gap-4">
@@ -75,8 +75,8 @@
             @empty
                 <x-empty-state
                     title="Belum ada riwayat pembayaran"
-                    description="Setelah Anda mengunggah bukti transfer angsuran, data pembayaran akan tampil di sini."
-                    action-label="Upload Pembayaran"
+                    description="Setelah Anda membuat transaksi Midtrans, data pembayaran akan tampil di sini."
+                    action-label="Bayar Angsuran"
                     action-href="{{ route('user.payments.create') }}"
                 />
             @endforelse

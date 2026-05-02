@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
 use App\Models\Angsuran;
-use App\Models\MetodeBayar;
 use App\Models\Pembayaran;
 use App\Services\PaymentService;
 use Illuminate\Contracts\View\View;
@@ -41,7 +40,6 @@ class PaymentController extends Controller
         return view('user.payments.create', [
             'installments' => $installments,
             'selectedInstallment' => $installments->firstWhere('id', $request->integer('installment')),
-            'paymentMethods' => MetodeBayar::where('status_aktif', true)->orderBy('metode_pembayaran')->get(),
         ]);
     }
 
@@ -49,27 +47,96 @@ class PaymentController extends Controller
     {
         $validated = $request->validate([
             'angsuran_id' => ['required', 'exists:angsuran,id'],
-            'nominal_bayar' => ['required', 'integer', 'min:0'],
-            'tanggal_bayar' => ['required', 'date'],
-            'id_metode_bayar' => ['required', 'exists:metode_bayar,id'],
-            'nama_bank_pengirim' => ['nullable', 'string', 'max:100'],
-            'nama_pemilik_rekening' => ['nullable', 'string', 'max:255'],
-            'bukti_bayar' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
-            'catatan' => ['nullable', 'string', 'max:1000'],
         ]);
 
         $payment = $this->paymentService->create($this->currentPelanggan(), $validated);
 
-        return redirect()->route('user.payments.show', $payment)->with('status', 'Bukti pembayaran berhasil diunggah.');
+        if (! $payment->midtrans_redirect_url) {
+            return redirect()
+                ->route('user.payments.show', $payment)
+                ->with('status', 'Sesi Midtrans belum tersedia. Silakan refresh status beberapa saat lagi.');
+        }
+
+        return redirect()->away($payment->midtrans_redirect_url);
     }
 
     public function show(Pembayaran $payment): View
     {
         abort_unless($payment->pelanggan_id === $this->currentPelanggan()->id, 404);
 
+        if ($payment->status_verifikasi === 'pending' && $payment->midtrans_order_id) {
+            try {
+                $payment = $this->paymentService->syncFromMidtransGateway($payment);
+            } catch (\Throwable) {
+                // Keep page accessible even if Midtrans sync fails.
+            }
+        }
+
         return view('user.payments.show', [
             'payment' => $payment->load('installment.application.motor', 'metodeBayar'),
+            'midtransUrl' => $payment->status_verifikasi === 'pending' ? $payment->midtrans_redirect_url : null,
         ]);
+    }
+
+    public function midtransFinish(Request $request): RedirectResponse
+    {
+        $orderId = trim((string) $request->query('order_id'));
+
+        if ($orderId === '') {
+            return redirect()
+                ->route('user.payments.index')
+                ->with('status', 'Kembali dari Midtrans. Status pembayaran akan diperbarui otomatis.');
+        }
+
+        $payment = Pembayaran::query()
+            ->where('pelanggan_id', $this->currentPelanggan()->id)
+            ->where(function ($query) use ($orderId) {
+                $query->where('midtrans_order_id', $orderId)
+                    ->orWhere('kode_pembayaran', $orderId);
+            })
+            ->latest()
+            ->first();
+
+        if (! $payment) {
+            return redirect()
+                ->route('user.payments.index')
+                ->with('status', 'Kembali dari Midtrans. Status pembayaran akan diperbarui otomatis.');
+        }
+
+        if ($payment->status_verifikasi === 'pending' && $payment->midtrans_order_id) {
+            try {
+                $this->paymentService->syncFromMidtransGateway($payment);
+            } catch (\Throwable) {
+                // Keep normal redirect flow even if status sync fails.
+            }
+        }
+
+        return redirect()
+            ->route('user.payments.show', $payment)
+            ->with('status', 'Kembali dari Midtrans. Status pembayaran akan diperbarui otomatis.');
+    }
+
+    public function refreshMidtransStatus(Pembayaran $payment): RedirectResponse
+    {
+        abort_unless($payment->pelanggan_id === $this->currentPelanggan()->id, 404);
+
+        if (! $payment->midtrans_order_id) {
+            return redirect()
+                ->route('user.payments.show', $payment)
+                ->with('status', 'Refresh status hanya tersedia untuk transaksi Midtrans.');
+        }
+
+        try {
+            $this->paymentService->syncFromMidtransGateway($payment);
+
+            return redirect()
+                ->route('user.payments.show', $payment)
+                ->with('status', 'Status Midtrans berhasil diperbarui.');
+        } catch (\Throwable $exception) {
+            return redirect()
+                ->route('user.payments.show', $payment)
+                ->with('status', 'Gagal refresh status Midtrans: '.$exception->getMessage());
+        }
     }
 
     public function receipt(Pembayaran $payment): View

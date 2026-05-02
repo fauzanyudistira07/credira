@@ -9,7 +9,7 @@
         <div class="app-panel-dark">
             <p class="app-kicker">Pusat Angsuran</p>
             <h2 class="mt-4 text-3xl font-semibold leading-tight text-white sm:text-4xl">Semua tagihan kredit motor tertata sebagai jadwal yang mudah dipantau.</h2>
-            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">Gunakan halaman ini untuk melihat jatuh tempo bulanan, mendeteksi tagihan telat, dan menuju halaman upload pembayaran hanya dengan satu langkah.</p>
+            <p class="mt-4 max-w-2xl text-sm leading-7 text-white/72">Gunakan halaman ini untuk melihat jatuh tempo bulanan, mendeteksi tagihan telat, dan menuju checkout Midtrans hanya dengan satu langkah.</p>
 
             <div class="mt-8 grid gap-4 sm:grid-cols-3">
                 <div class="app-metric-card-dark">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="app-metric-card-dark">
                     <p class="text-[11px] uppercase tracking-[0.24em] text-white/46">Aksi cepat</p>
-                    <a href="{{ route('user.payments.create') }}" class="btn-outline-light mt-3 w-full">Upload Pembayaran</a>
+                    <a href="{{ route('user.payments.create') }}" class="btn-outline-light mt-3 w-full">Bayar Sekarang</a>
                 </div>
             </div>
         </div>

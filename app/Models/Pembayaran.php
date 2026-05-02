@@ -21,6 +21,13 @@ class Pembayaran extends Model
         'angsuran_id',
         'pelanggan_id',
         'kode_pembayaran',
+        'midtrans_order_id',
+        'midtrans_transaction_id',
+        'midtrans_snap_token',
+        'midtrans_redirect_url',
+        'midtrans_payment_type',
+        'midtrans_status_code',
+        'midtrans_payload',
         'id_metode_bayar',
         'metode_bayar',
         'tempat_bayar',
@@ -43,6 +50,7 @@ class Pembayaran extends Model
             'nominal_bayar' => 'integer',
             'tanggal_bayar' => 'date',
             'verified_at' => 'datetime',
+            'midtrans_payload' => 'array',
         ];
     }
 
@@ -79,6 +87,10 @@ class Pembayaran extends Model
     private function normalizeStoredFileUrl(?string $path): ?string
     {
         if (! $path) {
+            return null;
+        }
+
+        if ($path === '-' || str_starts_with($path, 'midtrans://')) {
             return null;
         }
 

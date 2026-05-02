@@ -12,7 +12,7 @@
                     <p class="app-kicker">Detail Tagihan</p>
                     <p class="mt-3 text-xs uppercase tracking-[0.28em] text-white/50">{{ $installment->application->kode_pengajuan }}</p>
                     <h2 class="mt-3 text-3xl font-semibold text-white">{{ $installment->application->motor->nama_motor }}</h2>
-                    <p class="mt-3 text-sm leading-7 text-white/70">Angsuran ke-{{ $installment->angsuran_ke }} untuk kontrak pembiayaan ini. Anda bisa melihat nominal, denda, dan semua bukti pembayaran yang pernah diunggah.</p>
+                    <p class="mt-3 text-sm leading-7 text-white/70">Angsuran ke-{{ $installment->angsuran_ke }} untuk kontrak pembiayaan ini. Anda bisa melihat nominal, denda, dan semua riwayat transaksi Midtrans.</p>
                 </div>
                 <x-status-badge :status="$installment->status_pembayaran" />
             </div>
@@ -37,7 +37,7 @@
             </div>
 
             <div class="mt-6 flex flex-wrap gap-3">
-                <a href="{{ route('user.payments.create', ['installment' => $installment->id]) }}" class="btn-accent">Upload Pembayaran</a>
+                <a href="{{ route('user.payments.create', ['installment' => $installment->id]) }}" class="btn-accent">Bayar Sekarang</a>
                 <a href="{{ route('user.installments.index') }}" class="btn-outline-light">Kembali ke Jadwal</a>
             </div>
         </div>
@@ -62,12 +62,12 @@
                         </div>
                     </article>
                 @empty
-                    <x-empty-state
-                        title="Belum ada pembayaran"
-                        description="Unggah bukti transfer untuk angsuran ini agar tim dapat memverifikasi pembayaran Anda."
-                        action-label="Upload Bukti"
-                        action-href="{{ route('user.payments.create', ['installment' => $installment->id]) }}"
-                    />
+                <x-empty-state
+                    title="Belum ada pembayaran"
+                    description="Buat transaksi Midtrans untuk menyelesaikan pembayaran angsuran ini."
+                    action-label="Bayar Angsuran"
+                    action-href="{{ route('user.payments.create', ['installment' => $installment->id]) }}"
+                />
                 @endforelse
             </div>
         </div>

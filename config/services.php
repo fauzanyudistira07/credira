@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'midtrans' => [
+        'server_key' => env('MIDTRANS_SERVER_KEY'),
+        'client_key' => env('MIDTRANS_CLIENT_KEY'),
+        'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
+        'verify_ssl' => env('MIDTRANS_VERIFY_SSL', true),
+        'local_simulator' => env('MIDTRANS_LOCAL_SIMULATOR', false),
+        'notification_url' => env('MIDTRANS_NOTIFICATION_URL'),
+    ],
+
 ];

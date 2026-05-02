@@ -144,7 +144,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
         Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
         Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+        Route::get('/payments/midtrans/finish', [PaymentController::class, 'midtransFinish'])->name('payments.midtrans.finish');
         Route::get('/payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
+        Route::post('/payments/{payment}/midtrans/refresh', [PaymentController::class, 'refreshMidtransStatus'])->name('payments.midtrans.refresh');
         Route::get('/payments/{payment}/receipt', [PaymentController::class, 'receipt'])->name('payments.receipt');
 
         Route::get('/deliveries', [DeliveryController::class, 'index'])->name('deliveries.index');
@@ -162,5 +164,3 @@ Route::middleware('auth')->group(function () {
         Route::delete('/addresses/{address}', [UserProfileController::class, 'destroyAddress'])->name('addresses.destroy');
     });
 });
-
-Route::prefix('api')->as('api.')->group(base_path('routes/api.php'));

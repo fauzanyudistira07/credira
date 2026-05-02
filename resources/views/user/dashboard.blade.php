@@ -17,7 +17,7 @@
             <div class="mt-4 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                 <div class="max-w-2xl">
                     <h2 class="text-3xl font-semibold leading-tight sm:text-4xl">Semua progres pembiayaan motor Anda kini terasa seperti satu aplikasi profesional.</h2>
-                    <p class="mt-4 max-w-xl text-sm leading-7 text-white/72">Pantau pengajuan, cek tagihan bulanan, unggah bukti pembayaran, lacak pengiriman unit, dan kelola profil nasabah dari satu beranda yang terhubung langsung ke database MySQL.</p>
+                    <p class="mt-4 max-w-xl text-sm leading-7 text-white/72">Pantau pengajuan, cek tagihan bulanan, bayar angsuran via Midtrans, lacak pengiriman unit, dan kelola profil nasabah dari satu beranda yang terhubung langsung ke database MySQL.</p>
                 </div>
                 <div class="flex flex-wrap gap-3">
                     <a href="{{ route('user.applications.create') }}" class="btn-accent">Ajukan Motor</a>
@@ -111,8 +111,8 @@
             </a>
             <a href="{{ route('user.payments.create') }}" class="app-quick-link">
                 <p class="app-kicker">Pembayaran</p>
-                <h3 class="mt-3 text-xl font-semibold text-slate-950">Upload bukti transfer</h3>
-                <p class="mt-2 text-sm leading-7 text-slate-600">Kirim bukti pembayaran angsuran dan pantau status verifikasinya.</p>
+                <h3 class="mt-3 text-xl font-semibold text-slate-950">Checkout Midtrans</h3>
+                <p class="mt-2 text-sm leading-7 text-slate-600">Bayar angsuran melalui Midtrans dan pantau status otomatisnya.</p>
             </a>
             <a href="{{ route('user.deliveries.index') }}" class="app-quick-link">
                 <p class="app-kicker">Pengiriman</p>
@@ -243,7 +243,7 @@
             <div class="flex items-center justify-between gap-4">
                 <div>
                     <p class="app-kicker">Pembayaran Terakhir</p>
-                    <h2 class="mt-3 text-2xl font-semibold text-slate-950">Upload dan verifikasi transfer</h2>
+                    <h2 class="mt-3 text-2xl font-semibold text-slate-950">Transaksi Midtrans terbaru</h2>
                 </div>
                 <a href="{{ route('user.payments.index') }}" class="btn-secondary">Lihat Semua</a>
             </div>
@@ -264,12 +264,12 @@
                         </div>
                     </article>
                 @empty
-                    <x-empty-state
-                        title="Belum ada pembayaran"
-                        description="Setelah Anda mengunggah bukti transfer, riwayat pembayaran akan muncul di sini."
-                        action-label="Upload Pembayaran"
-                        action-href="{{ route('user.payments.create') }}"
-                    />
+                <x-empty-state
+                    title="Belum ada pembayaran"
+                    description="Setelah Anda membuat transaksi Midtrans, riwayat pembayaran akan muncul di sini."
+                    action-label="Bayar Angsuran"
+                    action-href="{{ route('user.payments.create') }}"
+                />
                 @endforelse
             </div>
         </div>

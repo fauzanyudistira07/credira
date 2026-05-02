@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\AuthApiController;
+use App\Http\Controllers\Api\MidtransWebhookController;
 use App\Http\Controllers\Api\PublicApiController;
 use App\Http\Controllers\Api\UserApplicationApiController;
 use App\Http\Controllers\Api\UserDashboardApiController;
@@ -10,6 +11,8 @@ use App\Http\Controllers\Api\UserNotificationApiController;
 use App\Http\Controllers\Api\UserPaymentApiController;
 use App\Http\Controllers\Api\UserProfileApiController;
 use Illuminate\Support\Facades\Route;
+
+Route::post('/payments/midtrans/notification', MidtransWebhookController::class)->name('payments.midtrans.notification');
 
 Route::prefix('public')->name('public.')->group(function () {
     Route::get('/motors', [PublicApiController::class, 'motors'])->name('motors.index');

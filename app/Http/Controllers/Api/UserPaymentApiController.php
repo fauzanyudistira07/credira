@@ -28,19 +28,13 @@ class UserPaymentApiController extends Controller
     {
         $validated = $request->validate([
             'angsuran_id' => ['required', 'exists:angsuran,id'],
-            'nominal_bayar' => ['required', 'integer', 'min:0'],
-            'tanggal_bayar' => ['required', 'date'],
-            'metode_bayar' => ['required', 'string', 'max:100'],
-            'nama_bank_pengirim' => ['nullable', 'string', 'max:100'],
-            'nama_pemilik_rekening' => ['nullable', 'string', 'max:255'],
-            'bukti_bayar' => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:5120'],
-            'catatan' => ['nullable', 'string', 'max:1000'],
         ]);
 
         $payment = $this->paymentService->create($this->currentPelanggan(), $validated);
 
         return $this->apiResponse([
             'payment' => $payment,
+            'midtrans_redirect_url' => $payment->midtrans_redirect_url,
         ], 'Pembayaran berhasil dibuat.', 201);
     }
 
