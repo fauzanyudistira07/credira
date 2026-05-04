@@ -195,7 +195,7 @@ class PaymentService
         return $payment->fresh(['installment.application.motor', 'metodeBayar']);
     }
 
-    public function syncFromMidtransGateway(Pembayaran $payment): Pembayaran
+    public function syncFromMidtransGateway(Pembayaran $payment, int $maxAttempts = 1, int $delayMilliseconds = 0): Pembayaran
     {
         $orderId = (string) ($payment->midtrans_order_id ?: $payment->kode_pembayaran);
 
@@ -203,9 +203,33 @@ class PaymentService
             return $payment->fresh(['installment.application.motor', 'metodeBayar']);
         }
 
-        $payload = $this->midtransService->getTransactionStatus($orderId);
+        $attempts = max($maxAttempts, 1);
+        $delayMicroseconds = max($delayMilliseconds, 0) * 1000;
 
-        return $this->syncFromMidtransWebhook($payment, $payload);
+        for ($attempt = 1; $attempt <= $attempts; $attempt++) {
+            try {
+                $payload = $this->midtransService->getTransactionStatus($orderId);
+                $synced = $this->syncFromMidtransWebhook($payment, $payload);
+            } catch (\Throwable) {
+                if ($attempt < $attempts && $delayMicroseconds > 0) {
+                    usleep($delayMicroseconds);
+                }
+
+                continue;
+            }
+
+            if ($synced->status_verifikasi !== PaymentVerificationStatus::Pending->value) {
+                return $synced;
+            }
+
+            $payment = $synced->fresh();
+
+            if ($attempt < $attempts && $delayMicroseconds > 0) {
+                usleep($delayMicroseconds);
+            }
+        }
+
+        return $payment->fresh(['installment.application.motor', 'metodeBayar']);
     }
 
     protected function bootstrapMidtransPayment(Pembayaran $payment): Pembayaran

@@ -40,6 +40,7 @@ return [
         'client_key' => env('MIDTRANS_CLIENT_KEY'),
         'is_production' => env('MIDTRANS_IS_PRODUCTION', false),
         'verify_ssl' => env('MIDTRANS_VERIFY_SSL', true),
+        'use_finish_callback' => env('MIDTRANS_USE_FINISH_CALLBACK', true),
         'local_simulator' => env('MIDTRANS_LOCAL_SIMULATOR', false),
         'notification_url' => env('MIDTRANS_NOTIFICATION_URL'),
     ],

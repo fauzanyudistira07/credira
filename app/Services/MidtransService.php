@@ -43,10 +43,19 @@ class MidtransService
                     ''
                 ),
             ]],
-            'callbacks' => [
-                'finish' => route('user.payments.midtrans.finish'),
-            ],
         ];
+
+        if ((bool) config('services.midtrans.use_finish_callback', true)) {
+            $finishPath = route('user.payments.midtrans.finish', absolute: false);
+            $request = request();
+            $finishUrl = $request
+                ? rtrim($request->getSchemeAndHttpHost(), '/').$finishPath
+                : route('user.payments.midtrans.finish');
+
+            $payload['callbacks'] = [
+                'finish' => $finishUrl,
+            ];
+        }
 
         $request = Http::acceptJson()
             ->asJson()
@@ -111,11 +120,13 @@ class MidtransService
             ])
             ->get($baseUrl.'/v2/'.$orderId.'/status');
 
-        if (! $response->successful()) {
+        $json = (array) $response->json();
+
+        if (! $response->successful() && ! isset($json['status_code'])) {
             throw new RuntimeException('Gagal cek status Midtrans: '.$response->body());
         }
 
-        return (array) $response->json();
+        return $json;
     }
 
     public function mapMidtransStatusToVerificationStatus(array $payload): string
@@ -129,6 +140,10 @@ class MidtransService
 
         if ($transactionStatus === 'capture') {
             return $fraudStatus === 'challenge' ? 'pending' : 'valid';
+        }
+
+        if ($transactionStatus === 'authorize') {
+            return 'valid';
         }
 
         if ($transactionStatus === 'pending') {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Models\Angsuran;
 use App\Models\Pembayaran;
+use App\Services\MidtransService;
 use App\Services\PaymentService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -14,6 +15,7 @@ class PaymentController extends Controller
 {
     public function __construct(
         private readonly PaymentService $paymentService,
+        private readonly MidtransService $midtransService,
     ) {
     }
 
@@ -66,7 +68,7 @@ class PaymentController extends Controller
 
         if ($payment->status_verifikasi === 'pending' && $payment->midtrans_order_id) {
             try {
-                $payment = $this->paymentService->syncFromMidtransGateway($payment);
+                $payment = $this->paymentService->syncFromMidtransGateway($payment, 6, 500);
             } catch (\Throwable) {
                 // Keep page accessible even if Midtrans sync fails.
             }
@@ -105,15 +107,55 @@ class PaymentController extends Controller
 
         if ($payment->status_verifikasi === 'pending' && $payment->midtrans_order_id) {
             try {
-                $this->paymentService->syncFromMidtransGateway($payment);
+                $payment = $this->paymentService->syncFromMidtransGateway($payment, 20, 1000);
             } catch (\Throwable) {
                 // Keep normal redirect flow even if status sync fails.
             }
         }
 
+        if (
+            $payment->status_verifikasi === 'pending'
+            && $payment->midtrans_order_id
+            && (bool) config('services.midtrans.local_simulator', false)
+        ) {
+            $resultData = $request->query('result_data');
+            $resultPayload = [];
+            if (is_string($resultData) && $resultData !== '') {
+                $decoded = json_decode($resultData, true);
+                if (is_array($decoded)) {
+                    $resultPayload = $decoded;
+                }
+            }
+
+            $statusCode = (string) ($request->query('status_code', $resultPayload['status_code'] ?? ''));
+            $transactionStatus = (string) ($request->query('transaction_status', $resultPayload['transaction_status'] ?? ''));
+
+            if ($transactionStatus === '' && $statusCode === '200') {
+                $transactionStatus = 'settlement';
+            }
+
+            $fallbackPayload = [
+                'order_id' => $orderId,
+                'status_code' => $statusCode,
+                'transaction_status' => $transactionStatus,
+                'fraud_status' => (string) $request->query('fraud_status', $resultPayload['fraud_status'] ?? ''),
+                'transaction_id' => (string) $request->query('transaction_id', $resultPayload['transaction_id'] ?? ''),
+                'payment_type' => (string) $request->query('payment_type', $resultPayload['payment_type'] ?? ''),
+            ];
+
+            $mappedStatus = $this->midtransService->mapMidtransStatusToVerificationStatus($fallbackPayload);
+            if ($mappedStatus === 'valid') {
+                $payment = $this->paymentService->syncFromMidtransWebhook($payment, $fallbackPayload);
+            }
+        }
+
+        $statusMessage = $payment->fresh()->status_verifikasi === 'valid'
+            ? 'Pembayaran Midtrans sukses dan sudah dikonfirmasi otomatis.'
+            : 'Kembali dari Midtrans. Status pembayaran akan diperbarui otomatis.';
+
         return redirect()
             ->route('user.payments.show', $payment)
-            ->with('status', 'Kembali dari Midtrans. Status pembayaran akan diperbarui otomatis.');
+            ->with('status', $statusMessage);
     }
 
     public function refreshMidtransStatus(Pembayaran $payment): RedirectResponse
@@ -127,7 +169,7 @@ class PaymentController extends Controller
         }
 
         try {
-            $this->paymentService->syncFromMidtransGateway($payment);
+            $this->paymentService->syncFromMidtransGateway($payment, 8, 500);
 
             return redirect()
                 ->route('user.payments.show', $payment)
